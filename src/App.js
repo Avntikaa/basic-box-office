@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import MoviesList from './components/MoviesList';
 import './App.css';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import InputForm from './components/InputForm';
 
 function App() {
   const [movies,setMovies]=useState([]);
@@ -39,6 +40,7 @@ setIsLoading(false);
  
   return (
     <React.Fragment>
+      <InputForm/>
       <section>
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
       </section>
