@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -11,12 +11,14 @@ const[error,setError]=useState();
 function stopRetrying(){
 setIsLoading(false);
 }
-
+ useEffect(()=>{
+    fetchMovieHandler();
+  },[])
 
   async function fetchMovieHandler(){
     setIsLoading(true);
     try{
- const response=await fetch('https://swapi.py4e.com/api/filmss/');
+ const response=await fetch('https://swapi.py4e.com/api/films/');
      const data=await response.json();
 
  if(!response.ok)
@@ -33,6 +35,8 @@ setIsLoading(false);
 
   }
 
+
+ 
   return (
     <React.Fragment>
       <section>
