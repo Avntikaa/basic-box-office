@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 function App() {
   const [movies,setMovies]=useState([]);
@@ -22,7 +23,7 @@ const[isLoading,setIsLoading]=useState(false);
       </section>
       <section>
      {!isLoading && movies.length>0 && <MoviesList movies={movies} />}
-     {isLoading && <p>isLoading...</p>}
+     {isLoading && <p>isLoading .... <AiOutlineLoading3Quarters/></p>}
       </section>
     </React.Fragment>
   );
