@@ -7,12 +7,29 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 function App() {
   const [movies,setMovies]=useState([]);
 const[isLoading,setIsLoading]=useState(false);
+const[error,setError]=useState();
+function stopRetrying(){
+setIsLoading(false);
+}
+
+
   async function fetchMovieHandler(){
     setIsLoading(true);
-   const response=await fetch('https://swapi.py4e.com/api/films/');
-    const data=await response.json();
-    setMovies(data.results)
-       setIsLoading(false);
+    try{
+ const response=await fetch('https://swapi.py4e.com/api/filmss/');
+     const data=await response.json();
+
+ if(!response.ok)
+ {
+  throw new Error('Something went Wrong......retrying');
+ }
+    setMovies(data.results);
+           setIsLoading(false);
+    }
+  catch(error){
+    setError(error.message);
+    fetchMovieHandler();
+  }
 
   }
 
@@ -23,10 +40,15 @@ const[isLoading,setIsLoading]=useState(false);
       </section>
       <section>
      {!isLoading && movies.length>0 && <MoviesList movies={movies} />}
-     {isLoading && <p>isLoading .... <AiOutlineLoading3Quarters/></p>}
+     {isLoading && error && 
+     <>
+     <p>isLoading .... {error} <AiOutlineLoading3Quarters/></p>
+     <button onClick={stopRetrying}>Stop</button>
+     </>}
       </section>
     </React.Fragment>
   );
 }
 
 export default App;
+
