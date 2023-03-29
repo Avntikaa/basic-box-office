@@ -28,7 +28,7 @@ setIsLoading(false);
     }
   catch(error){
     setError(error.message);
-    fetchMovieHandler();
+    setTimeout(fetchMovieHandler,5000);
   }
 
   }
