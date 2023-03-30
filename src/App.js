@@ -1,58 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useCallback} from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import InputForm from './components/InputForm';
+import { useStateContext } from './store/StateContext';
 
 function App() {
-  const [movies,setMovies]=useState([]);
-const[isLoading,setIsLoading]=useState(false);
-const[error,setError]=useState();
-function stopRetrying(){
-setIsLoading(false);
-}
- useEffect(()=>{
-    fetchMovieHandler();
-  },[])
-
-  async function fetchMovieHandler(){
-    setIsLoading(true);
-    try{
- const response=await fetch('https://swapi.py4e.com/api/films/');
-     const data=await response.json();
-
- if(!response.ok)
- {
-  throw new Error('Something went Wrong......retrying');
- }
-    setMovies(data.results);
-           setIsLoading(false);
-    }
-  catch(error){
-    setError(error.message);
-    setTimeout(fetchMovieHandler,5000);
-  }
-
-  }
-
+  const cxt=useStateContext();
+useEffect(()=>{
+    cxt.fetchMovieHandler();
+  },[cxt.fetchMovieHandler])
 
  
   return (
-    <React.Fragment>
-      <InputForm/>
+    <>
+      <InputForm />
       <section>
-        <button onClick={fetchMovieHandler}>Fetch Movies</button>
+        <button onClick={cxt.fetchMovieHandler}>Fetch Movies</button>
       </section>
       <section>
-     {!isLoading && movies.length>0 && <MoviesList movies={movies} />}
-     {isLoading && error && 
+     {!cxt.isLoading && cxt.movies.length>0 && <MoviesList/>}
+     {cxt.isLoading && cxt.error && 
      <>
-     <p>isLoading .... {error} <AiOutlineLoading3Quarters/></p>
-     <button onClick={stopRetrying}>Stop</button>
+     <p>isLoading .... {cxt.error} <AiOutlineLoading3Quarters/></p>
+     <button onClick={cxt.stopRetrying}>Stop</button>
      </>}
       </section>
-    </React.Fragment>
+      </>
   );
 }
 
